@@ -53,9 +53,9 @@ const setting: ProjectConfig = {
   // Whether to show footer
   showFooter: false,
 
-  // Header configuration
+  // Header configuration 顶栏配置
   headerSetting: {
-    // header bg color
+    // header bg color 顶栏主题
     bgColor: HEADER_PRESET_BG_COLOR_LIST[0],
     // Fixed at the top
     fixed: true,
@@ -69,10 +69,10 @@ const setting: ProjectConfig = {
     showFullScreen: true,
     // Whether to show the document button
     showDoc: true,
-    // Whether to show the notification button
-    showNotice: true,
-    // Whether to display the menu search
-    showSearch: true,
+    // Whether to show the notification button 通知
+    showNotice: false,
+    // Whether to display the menu search 菜单搜索
+    showSearch: false,
   },
 
   // Menu configuration
