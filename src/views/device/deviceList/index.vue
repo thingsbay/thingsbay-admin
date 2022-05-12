@@ -1,11 +1,14 @@
 <template>
   <div class="p-4">
-    <BasicTable @register="registerTable">
+    <BasicTable
+      @register="registerTable"
+      :rowSelection="{ type: 'checkbox', selectedRowKeys: checkedKeys, onChange: onSelectChange }"
+    >
       <template #toolbar>
         <a-button type="primary" @click="saveDevice">
           {{ '新增设备' }}
         </a-button>
-        <a-button type="primary" @click="deleteDevice">
+        <a-button type="primary" :disabled="checkedKeys.length == 0" @click="deleteDevice">
           {{ '批量删除' }}
         </a-button>
       </template>
@@ -63,7 +66,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, ref } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { columns, searchFormSchema } from './device.data';
   import { demoListApi } from '/@/api/demo/table';
@@ -71,6 +74,7 @@
   export default defineComponent({
     components: { BasicTable, TableAction },
     setup() {
+      const checkedKeys = ref<Array<string | number>>([]);
       const [registerTable] = useTable({
         // 表格标题
         title: '设备列表',
@@ -129,6 +133,12 @@
       function handleOpen(record: Recordable) {
         console.log('点击了启用', record);
       }
+
+      function onSelectChange(selectedRowKeys: (string | number)[]) {
+        console.log(selectedRowKeys);
+        checkedKeys.value = selectedRowKeys;
+      }
+
       return {
         registerTable,
         saveDevice,
@@ -136,6 +146,8 @@
         handleEdit,
         handleDelete,
         handleOpen,
+        checkedKeys,
+        onSelectChange,
       };
     },
   });
