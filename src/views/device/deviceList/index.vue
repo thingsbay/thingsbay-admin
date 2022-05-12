@@ -1,6 +1,14 @@
 <template>
   <div class="p-4">
     <BasicTable @register="registerTable">
+      <template #toolbar>
+        <a-button type="primary" @click="saveDevice">
+          {{ '新增设备' }}
+        </a-button>
+        <a-button type="primary" @click="deleteDevice">
+          {{ '批量删除' }}
+        </a-button>
+      </template>
       <template #action="{ record }">
         <TableAction
           :actions="[
@@ -56,50 +64,47 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { BasicTable, useTable, BasicColumn, TableAction } from '/@/components/Table';
-
+  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { columns, searchFormSchema } from './device.data';
   import { demoListApi } from '/@/api/demo/table';
-  const columns: BasicColumn[] = [
-    {
-      title: '编号',
-      dataIndex: 'no',
-      width: 100,
-    },
-    {
-      title: '姓名',
-      dataIndex: 'name',
-      auth: 'test', // 根据权限控制是否显示: 无权限，不显示
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-    },
-    {
-      title: '地址',
-      dataIndex: 'address',
-      auth: 'super', // 同时根据权限和业务控制是否显示
-      ifShow: (_column) => {
-        return true;
-      },
-    },
-    {
-      title: '开始时间',
-      dataIndex: 'beginTime',
-    },
-    {
-      title: '结束时间',
-      dataIndex: 'endTime',
-      width: 200,
-    },
-  ];
+
   export default defineComponent({
     components: { BasicTable, TableAction },
     setup() {
       const [registerTable] = useTable({
-        title: 'TableAction组件及固定列示例',
+        // 表格标题
+        title: '设备列表',
+        // 请求接口
         api: demoListApi,
+        // 表单列信息
         columns: columns,
+        // 是否显示序号列
+        showIndexColumn: true,
+        // 指定rowKey
+        rowKey: 'id',
+        // 是否显示表格边框
         bordered: true,
+        // 表单配置
+        formConfig: {
+          labelWidth: 120,
+          schemas: searchFormSchema,
+          autoSubmitOnEnter: true,
+        },
+        // 显示表格设置工具
+        showTableSetting: true,
+        tableSetting: {
+          // 是否显示刷新按钮
+          redo: true,
+          // 是否显示尺寸调整按钮
+          size: true,
+          // 是否显示字段调整按钮
+          setting: true,
+          // 是否显示全屏按钮
+          fullScreen: true,
+        },
+        // 使用搜索表单
+        useSearchForm: true,
+        // 表格右侧操作列配置
         actionColumn: {
           width: 250,
           title: 'Action',
@@ -107,6 +112,14 @@
           slots: { customRender: 'action' },
         },
       });
+      // 新增设备
+      function saveDevice() {
+        // todo
+      }
+      // 批量删除
+      function deleteDevice() {
+        // todo
+      }
       function handleEdit(record: Recordable) {
         console.log('点击了编辑', record);
       }
@@ -118,6 +131,8 @@
       }
       return {
         registerTable,
+        saveDevice,
+        deleteDevice,
         handleEdit,
         handleDelete,
         handleOpen,
